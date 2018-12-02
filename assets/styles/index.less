@@ -2,49 +2,134 @@
 // but allowing components to change
 // http://www.paulirish.com/2012/box-sizing-border-box-ftw/
 html, body {
-    box-sizing: border-box;
+  box-sizing: border-box;
+  font-family: 'Bree Serif', serif;
+  margin: 0px;
+  // background-color: #0c321c;
+  background-color: #fff;
 }
 *, *:before, *:after {
     box-sizing: inherit;
 }
 
+.content {
+  width: 100%;
+  overflow: hidden;
+}
+
 h1 {
   text-align: center;
+  // margin: 20px 0 10px 0;
+}
+
+.left {
+  width: 43%;
+  float: left;
+  margin: 0 40px 0 60px;
+  // display: inline-block;
+  // background-color: orange;
+  background-color: #c4d0f5;
+  position: relative;
 }
 
 #inputBox {
+  width: 95%;
+  height: 550px;
   display: block;
   margin: 0 auto;
   outline: none;
   resize: none;
-  padding: 10px;
-  border: 1px solid #888;
+  padding: 15px 10px 10px 10px;
+  border: 1px solid #c4d0f5;
   font-size: 20px;
-  margin-bottom: 10px;
+  font-family: 'Bree Serif', serif;
+  background-color: #c4d0f5;
 }
 
-.wordCount {
-  margin: 0 auto;
-  height: 18px;
-  // border: 1px solid #888;
-  width: 667px;
-  padding: 0 10px;
-  margin-bottom: 10px;
-  // text-align: right;
-  & span {
-    margin-right: 30px;
+.infoBar {
+  posiiton: absolute;
+  height: 40px;
+  font-size: 20px;
+  overflow: hidden;
+  padding: 0 15px;
+  & div:nth-child(1) {
+    float: left;
+    transition: opacity 1s;
+    color: #ba1313;
+  }
+  & div:nth-child(2) {
+    float: right;
   }
 }
 
-.result {
+.invisible {
+  opacity: 0;
+}
+
+.visible {
+  opacity: 1;
+  animation: blink 2s infinite;
+}
+
+@keyframes blink {
+  0% {opacity: 1}
+  50% {opacity: 0}
+  100% {opacity: 1}
+}
+
+.red {
+  color: #ba1313;
+}
+
+.right {
+  width: 43%;
+  float: left;
   margin: 0 auto;
-  width: 667px;
-  height: 300px;
-  border: 1px solid #888;
+}
+
+.result {
+  position: relative;
+  width: 100%;
+  height: 590px;
+  margin: 0 auto;
+  // border: 1px solid #888;
   padding: 10px;
+  background-color: beige;
+  // line-height: 1em;
 }
 
 .word {
   display: inline-block;
-  margin: 0 10px;
+  margin-right: 10px;
+  transition: all 1s;
 }
+
+.wordsInLevel1 {
+  font-size: 11px;
+  opacity: 0.4;
+  line-height: 1em;
+}
+
+.wordsInLevel2 {
+  font-size: 18px;
+  opacity: 0.5;
+  line-height: 1.2em;
+}
+
+.wordsInLevel3 {
+  font-size: 25px;
+  opacity: 0.65;
+  line-height: 1.4em;
+}
+
+.wordsInLevel4 {
+  font-size: 30px;
+  opacity: 0.85;
+  line-height: 1.6em;
+}
+
+// .wordsInLevel5 {
+//   font-size: 35px;
+//   opacity: 1;
+//   line-height: 1.8em;
+// }

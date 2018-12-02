@@ -3,14 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width">
-  <title><%= htmlWebpackPlugin.options.title %></title>
+<link href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet">
+<title><%= htmlWebpackPlugin.options.title %></title>
 </head>
 <body>
   <div class="content">
     <h1>Text Analyzer</h1>
-    <textarea name="" id="inputBox" cols="70" rows="10" lang="en" placeholder="Enter text to analyze here: "></textarea>
-    <div class="wordCount"><span></span><span></span></div>
-    <div class="result"></div>
+    <div class="left">
+      <textarea id="inputBox" placeholder="Enter text to analyze here: "></textarea>
+      <div class="infoBar"><div class="invisible"></div><div>0</div></div>
+    </div>
+    <div class="right">
+      <div class="result">
+        <div class="level1"></div>
+        <div class="level2"></div>
+        <div class="level3"></div>
+        <div class="level4"></div>
+        <div class="level5"></div>
+      </div>
+    </div>
   </div>
 </body>
 </html>

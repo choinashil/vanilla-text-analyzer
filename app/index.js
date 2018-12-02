@@ -5,18 +5,14 @@ import 'styles/index.less';
 // START YOUR APP HERE
 // ================================
 
+var word;
 var data = {};
 var dataCount = 0;
 var maxLimit = 5000;
-var noHangeul = true;
 var lessThanLimit = true;
 
 var inputBox = document.querySelector('#inputBox');
-
-var wordCount = document.querySelector('.wordCount');
-wordCount.children[0].textContent = 'Number of characters: 0';
-wordCount.children[1].textContent = 'Total word count: 0';
-
+var infoBar = document.querySelector('.infoBar');
 var result = document.querySelector('.result');
 
 inputBox.addEventListener('keyup', function(e) {
@@ -24,52 +20,59 @@ inputBox.addEventListener('keyup', function(e) {
   countLength(e);
 });
 
+var regExpHangeul = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
+
 function validateInputValue (e) {
   var allCharacters = e.target.value;
-  var regExpHangeul = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
 
   if (regExpHangeul.test(allCharacters)) {
-    noHangeul = false;
-    // console.log('한글이 있습니다');
-    // console.log(noHangeul);
-    throwErrorWhenTypedHangeul();
+    infoBar.children[0].textContent = 'Only available in English';
+    infoBar.children[0].classList.remove('invisible');
+    infoBar.children[0].classList.add('visible');
   } else {
-    noHangeul = true;
-    // console.log('validator 통과');
-    // console.log(noHangeul);
-    if (noHangeul && lessThanLimit) {
-      analyzeInputValue(e);
-    }
+    infoBar.children[0].classList.remove('visible');
+    infoBar.children[0].classList.add('invisible');
   }
 }
 
 function countLength(e) {
   var allCharacters = e.target.value;
+
+  if (regExpHangeul.test(allCharacters)) {
+    allCharacters = allCharacters.replace(regExpHangeul, '');
+  }
+
   var lengthCount = allCharacters.length;
-  wordCount.children[0].textContent = `Number of characters: ${lengthCount}`;
+  infoBar.children[1].textContent = lengthCount;
 
   if (lengthCount > maxLimit) {
     lessThanLimit = false;
-    throwErrorWhenExceededLimit(lengthCount, maxLimit);
+    infoBar.children[0].textContent = 'Exceeded length limit';
+    infoBar.children[0].classList.remove('invisible');
+    infoBar.children[0].classList.add('visible');
+    infoBar.children[1].classList.add('red');
   } else {
     lessThanLimit = true;
-    if (noHangeul && lessThanLimit) {
-      analyzeInputValue(e);
-    }
+    infoBar.children[1].classList.remove('red');
+  }
+  if (lessThanLimit) {
+    analyzeInputValue(e);
   }
 }
 
-var time = 100;
-var counter = 0;
-
 function analyzeInputValue(e) {
   var allCharacters = e.target.value;
-
   var regExpSymbols = /[`~@#$%^&*\-_=+(){}\[\]<>|\\/;:'",.?!\n]/g;
+
+  if (stopWords.test(allCharacters)) {
+    allCharacters = allCharacters.replace(stopWords, '');
+  }
 
   if (regExpSymbols.test(allCharacters)) {
     allCharacters = allCharacters.replace(regExpSymbols, '');
   }
+
+  // console.log(allCharacters);
 
   if (allCharacters) {
     var allWords = allCharacters.toLowerCase().split(' ');
@@ -82,7 +85,8 @@ function analyzeInputValue(e) {
       }
     }
 
-    wordCount.children[1].textContent = `Total word count: ${allWords.length}`;
+    // console.log(allWords);
+    // infoBar.children[1].textContent = `Total word count: ${allWords.length}`;
 
     // console.log('1.',data);
     // console.log(`dataCount: ${dataCount}`);
@@ -106,41 +110,19 @@ function analyzeInputValue(e) {
       showResult();
     }
 
-  //   (function (data, allWords, dataCount) {
-  //   setTimeout(function() {
-  //     for (var i = dataCount; i < allWords.length; i++) {
-  //       if (data[allWords[i]]) {
-  //         data[allWords[i]] = data[allWords[i]] + 1;
-  //         dataCount++;
-  //         console.log('2.',data);
-  //       } else {
-  //         data[allWords[i]] = 1;
-  //         dataCount++;
-  //         console.log('3.',data);
-  //       }
-  //     }
-  //     showResult();
-  //   }, time * counter);
-  //   counter++;
-  // })(data, allWords, dataCount);
+  // 스페이스키 눌러서 글자 지울때도 대응하도록!
+
 
   } else {
     data = {};
-    wordCount.children[1].textContent = 'Total word count: 0';
+    dataCount = 0;
     result.textContent = '';
-    // console.log(allWords);
-    // console.log(data);
   }
-
 }
 
 function showResult() {
-  // 글자 지웠을때 처리하기!
-  var word;
-
   for (var key in data) {
     var needToCreate = false;
-
     if (result.childElementCount) {
       for (var i = 0; i < result.childElementCount; i++) {
         if (key === result.children[i].textContent) {
@@ -156,54 +138,81 @@ function showResult() {
     } else {
       needToCreate = true;
     }
-
     if (needToCreate) {
-      word = document.createElement('div');
-      word.classList.add('word');
-      word.textContent = key;
-      word.style.left = Math.floor(Math.random() * 600) + 'px';
-      word.style.top = Math.floor(Math.random() * 240) + 'px';
-      word.style.opacity = '0.4';
-      result.appendChild(word);
-      // console.log(`${key}: width-${word.offsetWidth}, height-${word.offsetHeight}, left-${word.offsetLeft}, top-${word.offsetTop}`);
-
+      createWord(key);
     }
-
   }
-
 }
+
+var level1 = document.querySelector('.level1');
+var level2 = document.querySelector('.level2');
+var level3 = document.querySelector('.level3');
+var level4 = document.querySelector('.level4');
+var level5 = document.querySelector('.level5');
+
+
+function createWord(key) {
+  word = document.createElement('div');
+  word.classList.add('word');
+  word.textContent = key;
+  result.insertBefore(word, level1);
+}
+
 
 function changeWord(key, i) {
+
   switch(data[key]) {
     case 2 :
-      result.children[i].style.fontSize = '25px';
-      result.children[i].style.opacity = '0.65';
-      // console.log(`${key}: width-${result.children[i].offsetWidth}, height-${result.children[i].offsetHeight}, left-${result.children[i].offsetLeft}, top-${result.children[i].offsetTop}`);
+      result.insertBefore(result.children[i], level2);
+      for (var i = 0; i < result.childElementCount; i++) {
+        if (result.children[i].textContent === key) {
+          result.children[i].style.fontSize = '25px';
+          result.children[i].style.opacity = '0.65';
+          result.children[i].style.lineHeight = '1.3em';
+        }
+      }
       break;
     case 3 :
-      result.children[i].style.fontSize = '35px';
-      result.children[i].style.opacity = '0.75';
+      result.insertBefore(result.children[i], level3);
+      for (var i = 0; i < result.childElementCount; i++) {
+        if (result.children[i].textContent === key) {
+          result.children[i].style.fontSize = '35px';
+          result.children[i].style.opacity = '0.75';
+          result.children[i].style.lineHeight = '1.5em';
+        }
+      }
       break;
     case 4 :
-      result.children[i].style.fontSize = '45px';
-      result.children[i].style.opacity = '0.90';
+      result.insertBefore(result.children[i], level4);
+      for (var i = 0; i < result.childElementCount; i++) {
+        if (result.children[i].textContent === key) {
+          result.children[i].style.fontSize = '45px';
+          result.children[i].style.opacity = '0.90';
+          result.children[i].style.lineHeight = '1.8em';
+        }
+      }
       break;
     case 5 :
-      result.children[i].style.fontSize = '60px';
-      result.children[i].style.opacity = '1';
+      result.insertBefore(result.children[i], level5);
+      for (var i = 0; i < result.childElementCount; i++) {
+        if (result.children[i].textContent === key) {
+          result.children[i].style.fontSize = '60px';
+          result.children[i].style.opacity = '1';
+        }
+      }
       break;
+  }
+
+  console.log(level5.offsetTop, result.clientHeight)
+  if (level5.offsetTop > result.clientHeight - 10) {
+    var i = 0;
+    while (level5.offsetTop > result.clientHeight - 10) {
+      // result.removeChild(result.children[i]);
+      result.children[i].style.display = 'none';
+      i++;
+    }
   }
 }
 
-function throwErrorWhenTypedHangeul() {
-  result.style.backgroundColor = 'orange';
-  result.textContent = '영어만 입력하세요';
-}
 
-function throwErrorWhenExceededLimit(lengthCount, maxLimit) {
-  result.style.backgroundColor = 'red';
-  result.textContent = `5000자 이하로 입력하세요. 현재 ${lengthCount - maxLimit}자 초과입니다.`;
-}
-
-// 전치사 preposition
-// [about, ]
+var stopWords = /\b(i|me|my|myself|we|us|our|ours|ourselves|you|your|yours|yourself|yourselves|he|him|his|himself|she|her|hers|herself|it|its|itself|they|them|their|theirs|themselves|what|which|who|whom|whose|this|that|these|those|am|is|are|was|were|be|been|being|have|has|had|having|do|does|did|doing|will|would|should|can|could|ought|i'm|you're|he's|she's|it's|we're|they're|i've|you've|we've|they've|i'd|you'd|he'd|she'd|we'd|they'd|i'll|you'll|he'll|she'll|we'll|they'll|isn't|aren't|wasn't|weren't|hasn't|haven't|hadn't|doesn't|don't|didn't|won't|wouldn't|shan't|shouldn't|can't|cannot|couldn't|mustn't|let's|that's|who's|what's|here's|there's|when's|where's|why's|how's|a|an|the|and|but|if|or|because|as|until|while|of|at|by|for|with|about|against|between|into|through|during|before|after|above|below|to|from|up|upon|down|in|out|on|off|over|under|again|further|then|once|here|there|when|where|why|how|all|any|both|each|few|more|most|other|some|such|no|nor|not|only|own|same|so|than|too|very|say|says|said|shall|also)\b/gim;
