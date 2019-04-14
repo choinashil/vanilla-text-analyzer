@@ -5,20 +5,18 @@ html, body {
   box-sizing: border-box;
   font-family: 'Bree Serif', serif;
   margin: 0px;
-  background-color: #fff;
 }
 
 *, *:before, *:after {
     box-sizing: inherit;
 }
 
-.content {
-  width: 100%;
+.wrapper {
+  text-align: center;
 }
 
 .header {
-  position: relative;
-  padding: 0 510px;
+  text-align: center;
 }
 
 h1 {
@@ -28,6 +26,7 @@ h1 {
 }
 
 .chart {
+  display: inline-block;
   color: #0e225d;
   font-size: 25px;
   opacity: 0.6;
@@ -43,7 +42,7 @@ h1 {
 .rankingBox {
   display: inline-block;
   position: absolute;
-  left: 770px;
+  left: 849px;
   top: 28px;
   background-color: orange;
   padding: 8px;
@@ -73,10 +72,18 @@ h1 {
 .top5List {
   float: left;
   margin-right: 15px;
+  text-align: left;
 }
 
 .frequency {
   float: left;
+  text-align: left;
+}
+
+.content {
+  width: 100%;
+  overflow: hidden;
+  display: inline-block;
 }
 
 .left {
@@ -84,7 +91,6 @@ h1 {
   float: left;
   margin: 0 40px 0 80px;
   background-color: #e0e8ff;
-  position: relative;
 }
 
 #inputBox {
@@ -137,7 +143,6 @@ h1 {
 .right {
   width: 50%;
   float: left;
-  margin: 0 auto;
   display: table;
 }
 
