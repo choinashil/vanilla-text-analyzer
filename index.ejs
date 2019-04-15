@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"><title><%= htmlWebpackPlugin.options.title %></title>
 </head>
 <body>
-  <div class="content">
+  <div class="wrapper">
     <div class="header">
       <h1>Text Analyzer</h1>
       <span class="chart">
@@ -15,22 +15,24 @@
         <div class="rankingBox click">click!</div>
       </span>
     </div>
-    <div class="left">
-      <textarea id="inputBox" placeholder="Enter text to analyze here: "></textarea>
-      <div class="infoBar"><div class="invisible"></div><div>0</div></div>
-    </div>
-    <div class="right">
-      <div class="tag"></div>
-      <div class="result">
-        <div class="level1"></div>
-        <div class="level2"></div>
-        <div class="level3"></div>
-        <div class="level4"></div>
-        <div class="level5"></div>
-        <div class="level4_bottom"></div>
-        <div class="level3_bottom"></div>
-        <div class="level2_bottom"></div>
-        <div class="level1_bottom"></div>
+    <div class="content">
+      <div class="left">
+        <textarea id="inputBox" placeholder="Enter text to analyze here: "></textarea>
+        <div class="infoBar"><div class="invisible"></div><div>0</div></div>
+      </div>
+      <div class="right">
+        <div class="tag"></div>
+        <div class="result">
+          <div class="level1"></div>
+          <div class="level2"></div>
+          <div class="level3"></div>
+          <div class="level4"></div>
+          <div class="level5"></div>
+          <div class="level4_bottom"></div>
+          <div class="level3_bottom"></div>
+          <div class="level2_bottom"></div>
+          <div class="level1_bottom"></div>
+        </div>
       </div>
     </div>
   </div>
